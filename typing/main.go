@@ -9,7 +9,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/Cainaz/test-go/typing/loader"
+	"github.com/Cainaz/test-go/typing/typer"
 )
 
 func main() {
@@ -23,13 +23,15 @@ func main() {
 
 	wordsFilePath := fmt.Sprintf("%s/data/words", filepath.Dir(filename))
 
-	wordList, err := loader.LoadWordList(wordsFilePath)
+	wordList, err := typer.LoadWordList(wordsFilePath)
 	if err != nil {
 		panic("Error loading word list")
 	}
 
+	typer.FlushScreen()
+
 	for {
-		phraseString := loader.GenerateString(wordList)
+		phraseString := typer.GenerateString(wordList)
 		fmt.Printf("%s \n", phraseString)
 
 		var inputString string
@@ -39,10 +41,13 @@ func main() {
 		}
 
 		if inputString != phraseString {
-			fmt.Printf("'%s' is different from '%s'\n", inputString, phraseString)
+			typer.FlushScreen()
+			fmt.Printf("###### Misstyping #######\n'%s' is different from\n'%s'\n", inputString, phraseString)
+
+			// Print report and ask if you wanna keep playing
 			os.Exit(0)
 		} else {
-			fmt.Printf("You did it!\n")
+			typer.FlushScreen()
 		}
 	}
 

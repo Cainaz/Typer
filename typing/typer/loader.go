@@ -1,7 +1,8 @@
-package loader
+package typer
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"math/rand"
 	"os"
@@ -38,4 +39,8 @@ func GenerateString(wordList []string) string {
 	}
 	phraseString := strings.Join(phrase, " ")
 	return phraseString
+}
+
+func FlushScreen() {
+	fmt.Print("\033[H\033[2J")
 }
