@@ -1,10 +1,9 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
+	"log"
 	"math/rand"
-	"os"
 	"path/filepath"
 	"runtime"
 	"time"
@@ -13,7 +12,7 @@ import (
 )
 
 func main() {
-	// Guarantee of a random number
+	// Guarantee of a "real" random number
 	rand.Seed(time.Now().UnixNano())
 
 	_, filename, _, ok := runtime.Caller(0)
@@ -23,32 +22,10 @@ func main() {
 
 	wordsFilePath := fmt.Sprintf("%s/data/words", filepath.Dir(filename))
 
-	wordList, err := typer.LoadWordList(wordsFilePath)
+	typer, err := typer.New(wordsFilePath)
 	if err != nil {
-		panic("Error loading word list")
+		log.Fatal(err)
 	}
 
-	typer.FlushScreen()
-
-	for {
-		phraseString := typer.GenerateString(wordList)
-		fmt.Printf("%s \n", phraseString)
-
-		var inputString string
-		scanner := bufio.NewScanner(os.Stdin)
-		if scanner.Scan() {
-			inputString = scanner.Text()
-		}
-
-		if inputString != phraseString {
-			typer.FlushScreen()
-			fmt.Printf("###### Misstyping #######\n'%s' is different from\n'%s'\n", inputString, phraseString)
-
-			// Print report and ask if you wanna keep playing
-			os.Exit(0)
-		} else {
-			typer.FlushScreen()
-		}
-	}
-
+	typer.Run()
 }

@@ -1,10 +1,4 @@
 .PHONY: build clean deploy
 
-build:
+install:
 	env GOARCH=amd64 GOOS=linux go build -ldflags="-s -w" -o /usr/local/bin/typing typing/main.go
-
-clean:
-	rm -rf ./bin ./vendor Gopkg.lock
-
-deploy: clean build
-	sls deploy --verbose
