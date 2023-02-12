@@ -41,7 +41,7 @@ func (t *Typer) init() {
 	t.duration = 0
 }
 
-func (t *Typer) showReport() {
+func (t *Typer) showSessionReport() {
 	duration := time.Since(t.start).Minutes()
 	fmt.Println("---------------Session-Result--------------")
 	fmt.Printf("Duration: %.2f m\n", duration)
@@ -63,12 +63,12 @@ func (t *Typer) Run() {
 		t.nextLine(t.wordList)
 		t.showLine()
 		t.scanInput()
-		t.countCorrecWords()
+		t.countCorrectWords()
 		t.flushScreen()
 
-		if !t.isValid() {
+		if !t.IsCorrectlyTyped() {
 			t.showMisstyping()
-			t.showReport()
+			t.showSessionReport()
 			t.close()
 		}
 	}
@@ -116,7 +116,7 @@ func (t *Typer) close() {
 	os.Exit(0)
 }
 
-func (t *Typer) countCorrecWords() {
+func (t *Typer) countCorrectWords() {
 	typedWords := strings.Split(t.inputString, " ")
 	lineWords := strings.Split(t.line, " ")
 
@@ -135,7 +135,7 @@ func (t *Typer) showMisstyping() {
 	fmt.Printf("###########################################\n\n")
 }
 
-func (t *Typer) isValid() bool {
+func (t *Typer) IsCorrectlyTyped() bool {
 	return t.inputString == t.line
 }
 
